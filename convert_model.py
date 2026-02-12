@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+"""
+Convert GGUF model to ONNX format for Android inference
+Run this on your PC where the model is located
+"""
+
+import os
+import sys
+
+print("GGUF to ONNX Conversion Guide")
+print("=" * 50)
+print()
+print("Since direct GGUF->ONNX conversion is complex, here are the steps:")
+print()
+print("Option 1: Use Optimum + Transformers (Recommended)")
+print("-" * 50)
+print("1. Install required packages:")
+print("   pip install optimum[exporters] transformers torch onnx")
+print()
+print("2. Download the original Qwen2-1.5B model (not GGUF):")
+print("   from huggingface_hub import snapshot_download")
+print("   snapshot_download('Qwen/Qwen2-1.5B-Instruct', local_dir='./qwen2-1.5b')")
+print()
+print("3. Convert to ONNX:")
+print("   optimum-cli export onnx --model ./qwen2-1.5b --task text-generation ./qwen2-onnx")
+print()
+print("4. Quantize for mobile (optional but recommended):")
+print("   python -m onnxruntime.quantization.preprocess --input ./qwen2-onnx/model.onnx --output ./qwen2-onnx/model-int8.onnx")
+print()
+print()
+print("Option 2: Use Pre-converted ONNX models")
+print("-" * 50)
+print("Search Hugging Face for pre-converted ONNX models:")
+print("- Search: 'qwen onnx' or 'phi onnx' or 'tinyllama onnx'")
+print("- Look for models with 'onnx' in the name")
+print("- Download the .onnx file directly")
+print()
+print("Recommended small models for Android:")
+print("- microsoft/phi-2-onnx (2.7B parameters)")
+print("- TinyLlama-1.1B-Chat-ONNX")
+print("- Qwen/Qwen1.5-0.5B-Chat-ONNX")
+print()
+print()
+print("After conversion:")
+print("-" * 50)
+print("1. Copy the .onnx file to your Android device:")
+print("   adb push model.onnx /sdcard/Download/")
+print()
+print("2. The app will automatically use ONNX Runtime for inference")
+print()
+print("Note: ONNX models are typically larger than GGUF but run efficiently")
+print("      with ONNX Runtime's optimizations.")
